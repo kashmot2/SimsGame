@@ -38,26 +38,31 @@
             Start
           </button>
           <span class="hint">Click start to begin your story.</span>
-          <div class="audio-controls" role="group" aria-label="Background audio controls">
-            <button class="mute-toggle" id="mute-toggle" type="button" aria-pressed="false">
-              <span class="mute-text" id="mute-text">Mute</span>
-            </button>
-            <label class="volume-control">
-              <span class="volume-label">Volume</span>
-              <input
-                class="volume-slider"
-                id="volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value="0.45"
-                aria-label="Background audio volume"
-              />
-            </label>
-          </div>
         </div>
       </main>
+      <div class="audio-controls" role="group" aria-label="Background audio controls">
+        <button
+          class="mute-toggle audio-bubble"
+          id="mute-toggle"
+          type="button"
+          aria-pressed="false"
+        >
+          <span class="mute-text" id="mute-text">Mute</span>
+        </button>
+        <label class="volume-control audio-bubble">
+          <span class="volume-label">Volume</span>
+          <input
+            class="volume-slider"
+            id="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.45"
+            aria-label="Background audio volume"
+          />
+        </label>
+      </div>
       <audio
         id="bg-audio"
         src="assets/audio/calm-water-tracks.mp3"
