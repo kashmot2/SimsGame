@@ -41,27 +41,47 @@
         </div>
       </main>
       <div class="audio-controls" role="group" aria-label="Background audio controls">
-        <button
-          class="mute-toggle audio-bubble bubble-sheen"
-          id="mute-toggle"
-          type="button"
-          aria-pressed="false"
-        >
-          <span class="mute-text" id="mute-text">Mute</span>
-        </button>
-        <label class="volume-control audio-bubble bubble-sheen">
-          <span class="volume-label">Volume</span>
-          <input
-            class="volume-slider"
-            id="volume"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value="0.45"
-            aria-label="Background audio volume"
-          />
-        </label>
+        <div class="mixer-shell">
+          <div class="mixer-knob">
+            <button class="mute-toggle" id="mute-toggle" type="button" aria-pressed="false">
+              <span class="mute-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+                  <path
+                    d="M11 4.5L6.7 8H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.7L11 19.5a1 1 0 0 0 1.6-.8V5.3A1 1 0 0 0 11 4.5Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M16.5 8.5a1 1 0 0 1 1.4 0 6 6 0 0 1 0 7.1 1 1 0 1 1-1.4-1.4 4 4 0 0 0 0-4.3 1 1 0 0 1 0-1.4Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              <span class="mute-text" id="mute-text">Mute</span>
+            </button>
+          </div>
+          <div class="mixer-display">
+            <div class="mixer-header">
+              <span class="mixer-title">Sound Mixer</span>
+              <span class="mixer-status" id="mixer-status">Ambient</span>
+            </div>
+            <label class="volume-control">
+              <span class="volume-label">Volume</span>
+              <input
+                class="volume-slider"
+                id="volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.45"
+                aria-label="Background audio volume"
+              />
+            </label>
+            <div class="volume-meter" aria-hidden="true">
+              <span class="meter-fill" id="volume-meter"></span>
+            </div>
+          </div>
+        </div>
       </div>
       <audio
         id="bg-audio"
@@ -78,6 +98,8 @@
         const volume = document.getElementById("volume");
         const muteToggle = document.getElementById("mute-toggle");
         const muteText = document.getElementById("mute-text");
+        const meter = document.getElementById("volume-meter");
+        const status = document.getElementById("mixer-status");
 
         if (!audio || !volume || !muteToggle || !muteText) {
           return;
@@ -94,6 +116,12 @@
           const isMuted = audio.muted || audio.volume === 0;
           muteToggle.setAttribute("aria-pressed", String(isMuted));
           muteText.textContent = isMuted ? "Unmute" : "Mute";
+          if (status) {
+            status.textContent = isMuted ? "Muted" : "Ambient";
+          }
+          if (meter) {
+            meter.style.width = `${Math.round((isMuted ? 0 : audio.volume) * 100)}%`;
+          }
         };
 
         const setVolume = (value) => {
