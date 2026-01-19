@@ -73,7 +73,7 @@ body {
   position: absolute;
   inset: -12%;
   z-index: 1;
-  perspective: 900px;
+  perspective: 1100px;
   transform-style: preserve-3d;
   animation: hall-drift 30s ease-in-out infinite;
   pointer-events: none;
@@ -92,9 +92,9 @@ body {
   width: 220%;
   height: 220%;
   left: -60%;
-  bottom: -140%;
+  bottom: -170%;
   transform-origin: top;
-  transform: rotateX(76deg) translateY(8%) translateZ(-120px);
+  transform: rotateX(72deg) translateY(6%) translateZ(-90px);
   background:
     linear-gradient(180deg, rgba(10, 40, 26, 0.25) 0%, rgba(6, 24, 16, 0.8) 55%, rgba(4, 12, 8, 1) 100%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 140px),
@@ -108,9 +108,9 @@ body {
   width: 220%;
   height: 220%;
   left: -60%;
-  top: -170%;
+  top: -195%;
   transform-origin: bottom;
-  transform: rotateX(-76deg) translateY(-6%) translateZ(-160px);
+  transform: rotateX(-72deg) translateY(-4%) translateZ(-120px);
   background:
     linear-gradient(180deg, rgba(160, 255, 210, 0.18) 0%, rgba(6, 26, 18, 0.85) 70%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 160px),
@@ -135,14 +135,14 @@ body {
 .hall-wall-left {
   left: -105%;
   transform-origin: right center;
-  transform: rotateY(65deg) translateZ(-160px);
+  transform: rotateY(62deg) translateZ(-140px);
   opacity: 0.95;
 }
 
 .hall-wall-right {
   right: -105%;
   transform-origin: left center;
-  transform: rotateY(-65deg) translateZ(-160px);
+  transform: rotateY(-62deg) translateZ(-140px);
   opacity: 0.9;
 }
 
@@ -579,13 +579,13 @@ body {
 
 @keyframes hall-drift {
   0% {
-    transform: translate3d(-1.5%, 0.5%, 0) rotateZ(-0.2deg) scale(1.02);
+    transform: translate3d(-1.5%, 6%, 0) rotateZ(-0.2deg) scale(1.02);
   }
   50% {
-    transform: translate3d(1.5%, -0.5%, 0) rotateZ(0.2deg) scale(1.06);
+    transform: translate3d(1.5%, 4.5%, 0) rotateZ(0.2deg) scale(1.06);
   }
   100% {
-    transform: translate3d(-1%, 0.3%, 0) rotateZ(-0.15deg) scale(1.03);
+    transform: translate3d(-1%, 5.5%, 0) rotateZ(-0.15deg) scale(1.03);
   }
 }
 
