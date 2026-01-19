@@ -38,8 +38,144 @@
             Start
           </button>
           <span class="hint">Click start to begin your story.</span>
+          <div class="audio-controls" role="group" aria-label="Background audio controls">
+            <button class="mute-toggle" id="mute-toggle" type="button" aria-pressed="false">
+              <span class="mute-text" id="mute-text">Mute</span>
+            </button>
+            <label class="volume-control">
+              <span class="volume-label">Volume</span>
+              <input
+                class="volume-slider"
+                id="volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.45"
+                aria-label="Background audio volume"
+              />
+            </label>
+          </div>
         </div>
       </main>
+      <audio
+        id="bg-audio"
+        src="assets/audio/calm-water-tracks.mp3"
+        preload="auto"
+        loop
+        autoplay
+        playsinline
+      ></audio>
     </div>
+    <script>
+      const setupAudio = () => {
+        const audio = document.getElementById("bg-audio");
+        const volume = document.getElementById("volume");
+        const muteToggle = document.getElementById("mute-toggle");
+        const muteText = document.getElementById("mute-text");
+
+        if (!audio || !volume || !muteToggle || !muteText) {
+          return;
+        }
+
+        let lastVolume = parseFloat(volume.value);
+        let autoMuted = false;
+        if (!Number.isFinite(lastVolume) || lastVolume <= 0) {
+          lastVolume = 0.45;
+          volume.value = lastVolume.toString();
+        }
+
+        const updateMuteUI = () => {
+          const isMuted = audio.muted || audio.volume === 0;
+          muteToggle.setAttribute("aria-pressed", String(isMuted));
+          muteText.textContent = isMuted ? "Unmute" : "Mute";
+        };
+
+        const setVolume = (value) => {
+          const nextVolume = Math.max(0, Math.min(1, value));
+          audio.volume = nextVolume;
+          if (nextVolume === 0) {
+            audio.muted = true;
+          } else if (audio.muted) {
+            audio.muted = false;
+          }
+          if (nextVolume > 0) {
+            lastVolume = nextVolume;
+            autoMuted = false;
+          }
+          updateMuteUI();
+        };
+
+        setVolume(parseFloat(volume.value));
+
+        const enableAudio = () => {
+          if (autoMuted && audio.volume > 0) {
+            audio.muted = false;
+            autoMuted = false;
+          }
+          if (audio.volume === 0) {
+            setVolume(lastVolume);
+            volume.value = audio.volume.toString();
+          }
+          updateMuteUI();
+          audio.play().catch(() => {});
+        };
+
+        const tryPlay = () => {
+          const attempt = audio.play();
+          if (attempt && typeof attempt.catch === "function") {
+            attempt.catch(() => {
+              autoMuted = true;
+              audio.muted = true;
+              updateMuteUI();
+              audio.play().catch(() => {});
+            });
+          }
+        };
+
+        tryPlay();
+
+        volume.addEventListener("input", (event) => {
+          setVolume(parseFloat(event.target.value));
+        });
+
+        muteToggle.addEventListener("click", () => {
+          const wasMuted = audio.muted || audio.volume === 0;
+          if (wasMuted) {
+            audio.muted = false;
+            if (audio.volume === 0) {
+              setVolume(lastVolume);
+              volume.value = audio.volume.toString();
+            }
+            autoMuted = false;
+          } else {
+            audio.muted = true;
+          }
+          updateMuteUI();
+          audio.play().catch(() => {});
+        });
+
+        document.addEventListener(
+          "pointerdown",
+          () => {
+            enableAudio();
+          },
+          { once: true }
+        );
+
+        const startButton = document.querySelector(".start");
+        if (startButton) {
+          startButton.addEventListener("click", () => {
+            enableAudio();
+          });
+        }
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupAudio);
+      } else {
+        setupAudio();
+      }
+    </script>
   </body>
 </html>
